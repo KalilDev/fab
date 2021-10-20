@@ -166,8 +166,7 @@ class FAB extends ButtonStyleButton {
     final MaterialStateProperty<MouseCursor>? mouseCursor =
         (enabledMouseCursor == null && disabledMouseCursor == null)
             ? null
-            : _TextButtonDefaultMouseCursor(
-                enabledMouseCursor!, disabledMouseCursor!);
+            : _FABDefaultMouseCursor(enabledMouseCursor!, disabledMouseCursor!);
 
     return ButtonStyle(
       textStyle: ButtonStyleButton.allOrNull<TextStyle>(textStyle),
@@ -199,8 +198,8 @@ class FAB extends ButtonStyleButton {
 
     final EdgeInsetsGeometry scaledPadding = ButtonStyleButton.scaledPadding(
       const EdgeInsets.all(8),
-      const EdgeInsets.symmetric(horizontal: 8),
-      const EdgeInsets.symmetric(horizontal: 4),
+      const EdgeInsets.all(8),
+      const EdgeInsets.all(8),
       MediaQuery.maybeOf(context)?.textScaleFactor ?? 1,
     );
 
@@ -270,31 +269,9 @@ class _FABDefaultElevation extends MaterialStateProperty<double> {
 }
 
 @immutable
-class _TextButtonDefaultOverlay extends MaterialStateProperty<Color?> {
-  _TextButtonDefaultOverlay(this.primary);
-
-  final Color primary;
-
-  @override
-  Color? resolve(Set<MaterialState> states) {
-    if (states.contains(MaterialState.hovered))
-      return primary.withOpacity(0.04);
-    if (states.contains(MaterialState.focused) ||
-        states.contains(MaterialState.pressed))
-      return primary.withOpacity(0.12);
-    return null;
-  }
-
-  @override
-  String toString() {
-    return '{hovered: ${primary.withOpacity(0.04)}, focused,pressed: ${primary.withOpacity(0.12)}, otherwise: null}';
-  }
-}
-
-@immutable
-class _TextButtonDefaultMouseCursor extends MaterialStateProperty<MouseCursor>
+class _FABDefaultMouseCursor extends MaterialStateProperty<MouseCursor>
     with Diagnosticable {
-  _TextButtonDefaultMouseCursor(this.enabledCursor, this.disabledCursor);
+  _FABDefaultMouseCursor(this.enabledCursor, this.disabledCursor);
 
   final MouseCursor enabledCursor;
   final MouseCursor disabledCursor;
@@ -346,19 +323,6 @@ class _LargeFAB extends FAB {
     return super.defaultStyleOf(context).copyWith(
           fixedSize: MaterialStateProperty.all<Size>(size),
         );
-  }
-}
-
-class _LargeFABChild extends StatelessWidget {
-  final Widget child;
-  const _LargeFABChild({
-    Key? key,
-    required this.child,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }
 
